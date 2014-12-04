@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "product": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "tld_url": {
+      "type": "string"
+    },
+    "price": {
+      "type": "object",
+      "properties": {
+        "USD": {
+          "type": "object",
+          "properties": {
+            "register": {
+              "type": "integer"
+            },
+            "renew": {
+              "type": "integer"
+            },
+            "transfer": {
+              "type": "integer"
+            },
+            "restore": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

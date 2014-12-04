@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string"
+    },
+    "domain_utf8": {
+      "type": "string"
+    },
+    "status": {
+      "enum": ["active"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "renews_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "auto_renew": {
+      "type": "boolean"
+    },
+    "transfer_lock": {
+      "type": "boolean"
+    },
+    "transfer_code": {
+      "type": "string"
+    },
+    "contacts": {
+      "$ref": "file:domain-contacts.json#"
+    },
+    "mask_contacts": {
+      "type": "boolean"
+    },
+    "nameservers": {
+      "$ref": "file:nameservers.json#"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "file:service.json#"
+          },
+          {
+            "properties": {
+              "id": "string"
+            }
+          }
+        ]
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "allOf": [
+          {
+            "$ref": "file:dns-record.json#"
+          },
+          {
+            "properties": {
+              "id": "string"
+            }
+          }
+        ]
+      }
+    },
+    "pending": {
+      "type": "array",
+      "items": {
+        "$ref": "file:pending-update.json#"
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": ["incoming", "outgoing"]
+    },
+    "domain": {
+      "type": "string"
+    },
+    "domain_utf8": {
+      "type": "string"
+    },
+    "status": {
+      "enum": ["initiated", "pending", "complete"]
+    },
+    "transfer_code": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "enum": ["initiated", "pending", "complete"]
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

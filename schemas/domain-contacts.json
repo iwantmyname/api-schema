@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "owner": {
+      "$ref": "file:contact.json#"
+    },
+    "admin": {
+      "$ref": "file:contact.json#"
+    },
+    "tech": {
+      "$ref": "file:contact.json#"
+    },
+    "billing": {
+      "$ref": "file:contact.json#"
+    }
+  }
+}

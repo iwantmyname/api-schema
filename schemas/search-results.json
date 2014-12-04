@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "domain": {
+        "type": "string"
+      },
+      "domain_utf8": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "domain",
+      "domain_utf8"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string",
+    },
+    "default_contact": {
+      "$ref": "file:contact.json"
+    },
+    "default_nameservers": {
+      "$ref": "file:nameservers.json"
+    },
+    "default_billing": {
+      "$ref": "file:billing-profile.json"
+    }
+  },
+  "required": [
+    "username",
+    "default_contact",
+    "default_nameservers",
+    "default_billing"
+  ]
+}

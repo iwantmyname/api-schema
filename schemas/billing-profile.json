@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "last4": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "exp_month": {
+      "type": "integer"
+    },
+    "exp_year": {
+      "type": "integer"
+    }
+  }
+}

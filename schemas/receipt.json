@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "currency": {
+      "type": "string"
+    },
+    "subtotal": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "domain_utf8": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "amount": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "download_url": {
+      "type": "string"
+    }
+  }
+}
