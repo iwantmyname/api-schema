@@ -6,10 +6,12 @@
       "enum": ["incoming", "outgoing"]
     },
     "domain": {
-      "type": "string"
+      "type": "string",
+      "format": "hostname"
     },
     "domain_utf8": {
-      "type": "string"
+      "type": "string",
+      "format": "hostname"
     },
     "status": {
       "enum": ["initiated", "pending", "complete"]
@@ -40,8 +42,23 @@
           "message": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "created_at",
+          "status",
+          "message"
+        ]
       }
     }
-  }
+  },
+  "required": [
+    "type",
+    "domain",
+    "domain_utf8",
+    "status",
+    "transfer_code",
+    "created_at",
+    "updated_at",
+    "log"
+  ]
 }

@@ -4,6 +4,7 @@
   "properties": {
     "username": {
       "type": "string",
+      "format": "email"
     },
     "default_contact": {
       "$ref": "file:contact.json"

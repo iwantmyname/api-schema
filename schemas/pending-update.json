@@ -3,18 +3,16 @@
   "type": "object",
   "properties": {
     "created_at": {
-      "type": "string"
+      "type": "string",
+      "format": "date-time"
     },
     "payload": {
       "type": "object",
-      "properties": {
-        "nameservers": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
+      "properties": {}
     }
-  }
+  },
+  "required": [
+    "created_at",
+    "payload"
+  ]
 }

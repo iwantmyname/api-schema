@@ -8,30 +8,14 @@
     "type": {
       "type": "string"
     },
-    "tld_url": {
-      "type": "string"
-    },
     "price": {
       "type": "object",
-      "properties": {
-        "USD": {
-          "type": "object",
-          "properties": {
-            "register": {
-              "type": "integer"
-            },
-            "renew": {
-              "type": "integer"
-            },
-            "transfer": {
-              "type": "integer"
-            },
-            "restore": {
-              "type": "integer"
-            }
-          }
-        }
-      }
+      "properties": {}
     }
-  }
+  },
+  "required": [
+    "product",
+    "type",
+    "price"
+  ]
 }

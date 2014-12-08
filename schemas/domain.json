@@ -81,5 +81,20 @@
         "$ref": "file:pending-update.json#"
       }
     }
-  }
+  },
+  "required": [
+    "domain",
+    "domain_utf8",
+    "status",
+    "created_at",
+    "updated_at",
+    "expires_at",
+    "renews_at",
+    "auto_renew",
+    "contacts",
+    "nameservers",
+    "services",
+    "records",
+    "pending"
+  ]
 }

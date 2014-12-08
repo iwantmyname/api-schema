@@ -3,27 +3,19 @@
   "type": "object",
   "properties": {
     "domain": {
-      "type": "string"
+      "type": "string",
+      "format": "hostname"
     },
     "domain_utf8": {
-      "type": "string"
+      "type": "string",
+      "format": "hostname"
     },
     "available": {
       "type": "boolean"
     },
     "price": {
       "type": "object",
-      "properties": {
-        "USD": {
-          "type": "integer"
-        },
-        "EUR": {
-          "type": "integer"
-        },
-        "NZD": {
-          "type": "integer"
-        }
-      }
+      "properties": {}
     },
     "caveats": {
       "type": "array",
@@ -36,8 +28,18 @@
           "reason": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "type",
+          "reason"
+        ]
       }
     }
-  }
+  },
+  "properties": [
+    "domain",
+    "domain_utf8",
+    "available",
+    "price"
+  ]
 }

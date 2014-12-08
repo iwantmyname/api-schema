@@ -14,5 +14,11 @@
     "billing": {
       "$ref": "file:contact.json#"
     }
-  }
+  },
+  "required": [
+    "owner",
+    "admin",
+    "tech",
+    "billing"
+  ]
 }

@@ -9,10 +9,10 @@
       "type": "string"
     },
     "subtotal": {
-      "type": "integer"
+      "type": "string"
     },
     "total": {
-      "type": "integer"
+      "type": "string"
     },
     "items": {
       "type": "array",
@@ -25,23 +25,32 @@
           "type": {
             "type": "string"
           },
-          "domain": {
-            "type": "string"
-          },
-          "domain_utf8": {
-            "type": "string"
-          },
           "quantity": {
             "type": "integer"
           },
           "amount": {
-            "type": "integer"
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "product",
+          "type",
+          "quantity",
+          "amount"
+        ]
       }
     },
     "download_url": {
-      "type": "string"
+      "type": "string",
+      "format": "uri"
     }
-  }
+  },
+  "required": [
+    "id",
+    "currency",
+    "subtotal",
+    "total",
+    "items",
+    "download_url"
+  ]
 }

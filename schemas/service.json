@@ -17,5 +17,11 @@
         "$ref": "file:dns-records.json#"
       }
     }
-  }
+  },
+  "required": [
+    "service",
+    "name",
+    "description",
+    "records"
+  ]
 }

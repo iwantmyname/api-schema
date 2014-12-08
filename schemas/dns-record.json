@@ -12,7 +12,12 @@
       "type": "string"
     },
     "service": {
-      "type": "string"
+      "$ref": "file:service.json"
     }
-  }
+  },
+  "required": [
+    "name",
+    "type",
+    "value"
+  ]
 }

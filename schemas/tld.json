@@ -12,7 +12,8 @@
       "type": "string"
     },
     "image_url": {
-      "type": "string"
+      "type": "string",
+      "format": "uri"
     },
     "can_transfer_lock": {
       "type": "boolean"
@@ -21,7 +22,17 @@
       "type": "boolean"
     },
     "product_url": {
-      "type": "string"
+      "type": "string",
+      "format": "uri"
     }
-  }
+  },
+  "required": [
+    "tld",
+    "tld_utf8",
+    "description",
+    "image_url",
+    "can_transfer_lock",
+    "can_mask_contacts",
+    "product_url"
+  ]
 }
