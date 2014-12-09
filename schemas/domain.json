@@ -53,8 +53,11 @@
             "$ref": "file:service.json#"
           },
           {
+            "type": "object",
             "properties": {
-              "id": "string"
+              "id": {
+                "type": "string"
+              }
             }
           }
         ]
@@ -68,8 +71,11 @@
             "$ref": "file:dns-record.json#"
           },
           {
+            "type": "object",
             "properties": {
-              "id": "string"
+              "id": {
+                "type": "string"
+              }
             }
           }
         ]

@@ -7,13 +7,13 @@
       "format": "email"
     },
     "default_contact": {
-      "$ref": "file:contact.json"
+      "$ref": "file:contact.json#"
     },
     "default_nameservers": {
-      "$ref": "file:nameservers.json"
+      "$ref": "file:nameservers.json#"
     },
     "default_billing": {
-      "$ref": "file:billing-profile.json"
+      "$ref": "file:billing-profile.json#"
     }
   },
   "required": [
