@@ -36,7 +36,7 @@
       }
     }
   },
-  "properties": [
+  "required": [
     "domain",
     "domain_utf8",
     "available",
