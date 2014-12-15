@@ -5,7 +5,7 @@ var glob = require('glob')
 var path = require('path')
 
 // set up meta schema
-tv4.addSchema('http://json-schema.org/draft-04/schema', require('../schemas/meta/schema.json'))
+tv4.addSchema('http://json-schema.org/draft-04/schema', require('./meta-schemas/schema.json'))
 var metaSchema = {$ref: 'http://json-schema.org/draft-04/schema#'}
 
 // get schemas
