@@ -3,16 +3,16 @@
   "type": "object",
   "properties": {
     "owner": {
-      "$ref": "file:contact.json#"
+      "$ref": "contact.json#"
     },
     "admin": {
-      "$ref": "file:contact.json#"
+      "$ref": "contact.json#"
     },
     "tech": {
-      "$ref": "file:contact.json#"
+      "$ref": "contact.json#"
     },
     "billing": {
-      "$ref": "file:contact.json#"
+      "$ref": "contact.json#"
     }
   },
   "required": [

@@ -37,20 +37,20 @@
       "type": "string"
     },
     "contacts": {
-      "$ref": "file:domain-contacts.json#"
+      "$ref": "domain-contacts.json#"
     },
     "mask_contacts": {
       "type": "boolean"
     },
     "nameservers": {
-      "$ref": "file:nameservers.json#"
+      "$ref": "nameservers.json#"
     },
     "services": {
       "type": "array",
       "items": {
         "allOf": [
           {
-            "$ref": "file:service.json#"
+            "$ref": "service.json#"
           },
           {
             "type": "object",
@@ -68,7 +68,7 @@
       "items": {
         "allOf": [
           {
-            "$ref": "file:dns-record.json#"
+            "$ref": "dns-record.json#"
           },
           {
             "type": "object",
@@ -84,7 +84,7 @@
     "pending": {
       "type": "array",
       "items": {
-        "$ref": "file:pending-update.json#"
+        "$ref": "pending-update.json#"
       }
     }
   },

@@ -14,7 +14,7 @@
     "records": {
       "type": "array",
       "items": {
-        "$ref": "file:dns-records.json#"
+        "$ref": "dns-records.json#"
       }
     }
   },
