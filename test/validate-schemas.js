@@ -6,7 +6,9 @@ var path = require('path')
 
 // set up meta schema
 tv4.addSchema('http://json-schema.org/draft-04/schema', require('./meta-schemas/schema.json'))
+tv4.addSchema('http://json-schema.org/draft-04/hyper-schema', require('./meta-schemas/hyper-schema.json'))
 var metaSchema = {$ref: 'http://json-schema.org/draft-04/schema#'}
+var hyperSchema = {$ref: 'http://json-schema.org/draft-04/hyper-schema#'}
 
 // get schemas
 var schemas = glob.sync(__dirname + '/../schemas/*.json')
@@ -22,5 +24,15 @@ describe('Schema', function () {
         }
       })
     })
+  })
+})
+
+describe('Compiled schema', function () {
+  it('is a valid JSON hyper-schema', function () {
+    var schema = require('../src/schema')
+    var result = tv4.validateResult(schema, hyperSchema, true)
+    if (result.error) {
+      throw new Error('"#' + result.error.dataPath + '" ' + result.error.message)
+    }
   })
 })
