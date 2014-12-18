@@ -38,7 +38,7 @@ module.exports = {
           transfer_lock: { $ref: baseRef + '/definitions/transfer_lock' },
           mask_contacts: { $ref: baseRef + '/definitions/mask_contacts' }
         },
-        // TODO: additionalProperties?
+        // TODO: enforce additionalProperties?
         minProperties: 1
       },
       targetSchema: {
@@ -110,7 +110,8 @@ module.exports = {
     auto_renew: { $ref: baseRef + '/definitions/auto_renew' },
     transfer_lock: { $ref: baseRef + '/definitions/transfer_lock' },
     transfer_code: { $ref: baseRef + '/definitions/transfer_code' },
-    mask_contacts: { $ref: baseRef + '/definitions/mask_contacts' }
+    mask_contacts: { $ref: baseRef + '/definitions/mask_contacts' },
+    nameservers: { $ref: '#/definitions/domainNameservers' }
   },
   required: [
     'domain',
@@ -123,6 +124,7 @@ module.exports = {
     'auto_renew',
     'transfer_lock',
     'transfer_code',
-    'mask_contacts'
+    'mask_contacts',
+    'nameservers'
   ]
 }
