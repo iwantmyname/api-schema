@@ -20,7 +20,7 @@ module.exports = {
     {
       description: 'Get all information associated with the domain.',
       method: 'GET',
-      href: '/domains/{(' + encodeURIComponent(baseRef + '/definitions/identity') + ')}',
+      href: '/domains/{(' + baseRef + '/definitions/identity)}',
       rel: 'self',
       targetSchema: {
         $ref: baseRef
@@ -29,7 +29,7 @@ module.exports = {
     {
       description: 'Update specific editable details for the domain.',
       method: 'PATCH',
-      href: '/domains/{(' + encodeURIComponent(baseRef + '/definitions/identity') + ')}',
+      href: '/domains/{(' + baseRef + '/definitions/identity)}',
       rel: 'update',
       schema: {
         type: 'object',

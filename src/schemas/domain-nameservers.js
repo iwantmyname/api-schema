@@ -5,7 +5,7 @@ module.exports = {
     {
       description: 'Replace domain\'s nameservers with a new list of nameservers.',
       method: 'GET',
-      href: '/domains/{(' + encodeURIComponent('#/definitions/domain/definitions/identity') + ')}/nameservers',
+      href: '/domains/{(#/definitions/domain/definitions/identity)}/nameservers',
       rel: 'self',
       targetSchema: {
         $ref: baseRef
@@ -14,7 +14,7 @@ module.exports = {
     {
       description: 'List all updates initiated on the domain that are still pending at the registry.',
       method: 'PUT',
-      href: '/domains/{(' + encodeURIComponent('#/definitions/domain/definitions/identity') + ')}/nameservers',
+      href: '/domains/{(#/definitions/domain/definitions/identity)}/nameservers',
       rel: 'update',
       schema: {
         $ref: baseRef
