@@ -20,7 +20,7 @@ module.exports = {
     {
       description: 'Get all information associated with the domain.',
       method: 'GET',
-      href: '/domains/{domain}',
+      href: '/domains/{(' + encodeURIComponent(baseRef + '/definitions/identity') + ')}',
       rel: 'self',
       targetSchema: {
         $ref: baseRef
@@ -29,7 +29,7 @@ module.exports = {
     {
       description: 'Update specific editable details for the domain.',
       method: 'PATCH',
-      href: '/domains/{domain}',
+      href: '/domains/{(' + encodeURIComponent(baseRef + '/definitions/identity') + ')}',
       rel: 'update',
       schema: {
         type: 'object',
@@ -57,6 +57,12 @@ module.exports = {
       type: 'string',
       format: 'hostname',
       readonly: true
+    },
+    identity: {
+      anyOf: [
+        { $ref: baseRef + '/definitions/domain' },
+        { $ref: baseRef + '/definitions/domain_utf8' }
+      ]
     },
     status: {
       // TODO: define and describe status values
