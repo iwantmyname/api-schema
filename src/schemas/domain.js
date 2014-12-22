@@ -117,6 +117,7 @@ module.exports = {
     transfer_lock: { $ref: baseRef + '/definitions/transfer_lock' },
     transfer_code: { $ref: baseRef + '/definitions/transfer_code' },
     mask_contacts: { $ref: baseRef + '/definitions/mask_contacts' },
+    pending: { $ref: '#/definitions/domainUpdate' },
     nameservers: { $ref: '#/definitions/domainNameservers' }
   },
   required: [
