@@ -1,12 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:watch": "npm test -- --watch"
   },
   "devDependencies": {
     "glob": "^4.3.1",
+    "js-yaml": "^3.2.3",
     "mocha": "^2.0.1",
     "superagent": "^0.21.0",
+    "swagger-tools": "^0.7.2",
     "tv4": "^1.1.5"
   }
 }

@@ -1,0 +1,125 @@
+swagger: "2.0"
+info:
+  title: iwantmyname API
+  description: Manage your domain names and DNS records programmatically with our RESTful API.
+  version: "1.0.0"
+
+schemes:
+  - https
+host: api.iwantmyname.com
+basePath: /v1
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /domains:
+    get:
+      summary: List domains
+      description: |
+        List all registered domain names.
+      responses:
+        200:
+          description: |
+            A list of domains
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Domain"
+  /domains/{domain}:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      summary: Get a domain
+      description: |
+        Get all information associated with the domain.
+      responses:
+        200:
+          description: |
+            A single domain
+          schema:
+            $ref: "#/definitions/Domain"
+    patch:
+      summary: Update a domain
+      description: |
+        Update specific editable details for the domain.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            properties:
+              auto_renew:
+                $ref: "#/definitions/auto_renew"
+              transfer_lock:
+                $ref: "#/definitions/transfer_lock"
+              mask_contacts:
+                $ref: "#/definitions/mask_contacts"
+      responses:
+        200:
+          description: |
+            A single domain
+          schema:
+            $ref: "#/definitions/Domain"
+
+parameters:
+  domain:
+    name: domain
+    in: path
+    required: true
+    type: string
+    format: hostname
+
+definitions:
+  created_at:
+    type: string
+    format: date-time
+    readOnly: true
+  updated_at:
+    type: string
+    format: date-time
+    readOnly: true
+  expires_at:
+    type: string
+    format: date-time
+    readOnly: true
+  renews_at:
+    type: string
+    format: date-time
+    readOnly: true
+  domain:
+    type: string
+    format: hostname
+    readOnly: true
+  domain_utf8:
+    type: string
+    format: hostname
+    readOnly: true
+  auto_renew:
+    type: boolean
+  transfer_lock:
+    type: boolean
+  mask_contacts:
+    type: boolean
+
+  Domain:
+    properties:
+      domain:
+        $ref: "#/definitions/domain"
+      domain_utf8:
+        $ref: "#/definitions/domain_utf8"
+      created_at:
+        $ref: "#/definitions/created_at"
+      updated_at:
+        $ref: "#/definitions/updated_at"
+      expires_at:
+        $ref: "#/definitions/expires_at"
+      renews_at:
+        $ref: "#/definitions/renews_at"
+      auto_renew:
+        $ref: "#/definitions/auto_renew"
+      transfer_lock:
+        $ref: "#/definitions/transfer_lock"
+      mask_contacts:
+        $ref: "#/definitions/mask_contacts"
