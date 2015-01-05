@@ -13,10 +13,11 @@ consumes:
 produces:
   - application/json
 
+
 paths:
+
   /domains:
     get:
-      summary: List domains
       description: |
         List all registered domain names.
       responses:
@@ -27,11 +28,11 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Domain"
+
   /domains/{domain}:
     parameters:
       - $ref: "#/parameters/domain"
     get:
-      summary: Get a domain
       description: |
         Get all information associated with the domain.
       responses:
@@ -41,7 +42,6 @@ paths:
           schema:
             $ref: "#/definitions/Domain"
     patch:
-      summary: Update a domain
       description: |
         Update specific editable details for the domain.
       parameters:
@@ -63,6 +63,372 @@ paths:
           schema:
             $ref: "#/definitions/Domain"
 
+  /domains/{domain}/nameservers:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      description: |
+        List of all of the domain's nameservers.
+      responses:
+        200:
+          description: |
+            A list of domain nameservers
+          schema:
+            $ref: "#/definitions/Nameservers"
+    put:
+      description: |
+        Replace domain's nameservers with a new list of nameservers.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Nameservers"
+      responses:
+        200:
+          description: |
+            A list of domain nameservers
+          schema:
+            $ref: "#/definitions/Nameservers"
+
+  /domains/{domain}/pending:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      description: |
+        List all updates initiated on the domain that are still pending at the registry.
+      responses:
+        200:
+          description: |
+            A list of pending domain updates
+          schema:
+            $ref: "#/definitions/PendingUpdates"
+
+  /domains/{domain}/contacts:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      description: |
+        List all contacts (owner, admin, tech, billing) associated with the domain.
+      responses:
+        200:
+          description: |
+            A list of domain contacts
+          schema:
+            $ref: "#/definitions/DomainContacts"
+    put:
+      description: |
+        Replace contact information for all contact types at the same time.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/DomainContacts"
+      responses:
+        200:
+          description: |
+            A list of domain contacts
+          schema:
+            $ref: "#/definitions/DomainContacts"
+    patch:
+      description: |
+        Update specific contact information for all contact types at the same time.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            # TODO: replace this with a new schema without all the required properties
+            $ref: "#/definitions/DomainContacts"
+      responses:
+        200:
+          description: |
+            A list of domain contacts
+          schema:
+            $ref: "#/definitions/DomainContacts"
+
+  /domains/{domain}/contacts/{type}:
+    parameters:
+      - $ref: "#/parameters/domain"
+      - $ref: "#/parameters/contact_type"
+    get:
+      description: |
+        Show contact information for a specified contact type on the domain. Contact types include the domain owner/registrant (owner), administrative contact (admin), technical contact (tech), or billing contact (billing).
+      responses:
+        200:
+          description: |
+            A domain contact
+          schema:
+            $ref: "#/definitions/Contact"
+    put:
+      description: |
+        Replace contact information for a specific contact type.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Contact"
+      responses:
+        200:
+          description: |
+            A domain contact
+          schema:
+            $ref: "#/definitions/Contact"
+    patch:
+      description: |
+        Update specific contact information for a specific contact type.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            # TODO: replace this with a new schema without all the required properties
+            $ref: "#/definitions/Contact"
+      responses:
+        200:
+          description: |
+            A domain contact
+          schema:
+            $ref: "#/definitions/Contact"
+
+  /domains/{domain}/records:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      description: |
+        List all DNS records for the domain.
+      responses:
+        200:
+          description: |
+            A list of DNS records
+          schema:
+            allOf:
+              - $ref: "#/definitions/DomainRecords"
+              - type: array
+                items:
+                  required:
+                    - id
+    post:
+      description: |
+        Add a DNS record to the domain.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Record"
+      responses:
+        201:
+          description: |
+            A DNS record
+          schema:
+            allOf:
+              - $ref: "#/definitions/DomainRecord"
+              - required:
+                  - id
+    put:
+      description: |
+        Replace all DNS records for a domain with a new set of records. This is effectively DELETE on each exisiting record and POST for each new record.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Record"
+      responses:
+        200:
+          description: |
+            A list of DNS records
+          schema:
+            allOf:
+              - $ref: "#/definitions/DomainRecords"
+              - type: array
+                items:
+                  required:
+                    - id
+
+  /domains/{domain}/records/{id}:
+    parameters:
+      - $ref: "#/parameters/domain"
+      - $ref: "#/parameters/id"
+    delete:
+      description: |
+        Remove a specific DNS record from a domain.
+      responses:
+        204:
+          description: |
+            The DNS record was removed from the domain.
+
+  /domains/{domain}/zone:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      description: |
+        Show the domain's DNS record as a BIND-compatible zone file.
+      produces:
+        - text/plain
+      responses:
+        200:
+          description: |
+            A domain's zone file
+          # TODO: define schema?
+    put:
+      description: |
+        Replace the domain's DNS records using a BIND-compatible zone file.
+      consumes:
+        - text/plain
+      produces:
+        - text/plain
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          # TODO: schema is required here, but doesn't really fit a text/plain response type... find alternatives?
+          schema:
+            type: string
+      responses:
+        200:
+          description: |
+            A domain's zone file
+          # TODO: define schema?
+    
+  /domains/{domain}/services:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      description: |
+        List all one-click services installed to the domain.
+      responses:
+        200:
+          description: |
+            A list of domain's services
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/DomainService"
+    post:
+      description: |
+        Install a service to the domain by adding necessary DNS records and, for some services, web forwarding.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: "#/definitions/service"
+            required:
+              - name
+      responses:
+        201:
+          description: |
+            A domain service
+          schema:
+            $ref: "#/definitions/DomainService"
+
+  /domains/{domain}/services/{id}:
+    parameters:
+      - $ref: "#/parameters/domain"
+      - $ref: "#/parameters/id"
+    delete:
+      description: |
+        Remove all DNS records related to a service installed to the domain.
+      responses:
+        204:
+          description: |
+            The service was removed from the domain.
+
+  /transfers:
+    get:
+      description: |
+        List all pending incoming and outgoing domain transfers.
+      responses:
+        200:
+          description: |
+            A list of domain transfers
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Transfer"
+
+  /transfers/{domain}:
+    parameters:
+      - $ref: "#/parameters/domain"
+    put:
+      description: |
+        Restart the domain's pending transfer using a new authorization code.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              transfer_code:
+                $ref: "#/definitions/transfer_code"
+            required:
+              - transfer_code
+      responses:
+        200:
+          description: |
+            A domain transfer
+          schema:
+            $ref: "#/definitions/Transfer"
+
+
+  # /services:
+  #   get:
+
+  # /services/{service}:
+  #   parameters:
+  #     - $ref: "#/parameters/service"
+  #   get:
+
+  # /account:
+  #   get:
+  #   patch:
+  # /account/contacts/default:
+  #   get:
+  #   put:
+  #   patch:
+  # /account/nameservers/default:
+  #   get:
+  #   put:
+  # /account/billing/default:
+  #   get:
+  #   put:
+  #   delete:
+  # /account/receipts:
+  #   get:
+  # /account/receipts/{id}:
+  #   parameters:
+  #     - $ref: "#/parameters/id"
+  #   get:
+  # /products:
+  #   get:
+  # /products/{product}:
+  #   parameters:
+  #     - $ref: "#/parameters/product"
+  #   get:
+  # /tlds:
+  #   get:
+  # /tlds/{tld}:
+  #   parameters:
+  #     - $ref: "#/parameters/tld"
+  #   get:
+  # /search/results:
+  #   get:
+  # /search/results/{domain}:
+  #   parameters:
+  #     - $ref: "#/parameters/domain"
+  #   get:
+  
+
 parameters:
   domain:
     name: domain
@@ -70,6 +436,38 @@ parameters:
     required: true
     type: string
     format: hostname
+  contact_type:
+    name: type
+    in: path
+    required: true
+    type: string
+    enum:
+      - owner
+      - admin
+      - billing
+      - tech
+  id:
+    name: id
+    in: path
+    required: true
+    type: string
+    format: uuid
+  service:
+    name: service
+    in: path
+    required: true
+    type: string
+  product:
+    name: product
+    in: path
+    required: true
+    type: string
+  tld:
+    name: tld
+    in: path
+    required: true
+    type: string
+
 
 definitions:
   created_at:
@@ -102,6 +500,54 @@ definitions:
     type: boolean
   mask_contacts:
     type: boolean
+  nameserver:
+    type: string
+    format: hostname
+  first_name:
+    type: string
+  last_name:
+    type: string
+  company:
+    type: string
+  country:
+    type: string
+  street:
+    type: string
+  city:
+    type: string
+  state:
+    type: string
+  postcode:
+    type: string
+  phone:
+    type: string
+  email:
+    type: string
+    format: email
+  id:
+    type: string
+    format: uuid
+  service:
+    type: string
+  record_name:
+    type: string
+  record_type:
+    # TODO: define enum of record types
+    type: string
+  record_value:
+    type: string
+  transfer_type:
+    enum:
+      - incoming
+      - outgoing
+  transfer_status:
+    enum:
+      - initiated
+      - pending
+      - completed
+      # TODO: more transfer status types?
+  transfer_code:
+    type: string
 
   Domain:
     properties:
@@ -123,3 +569,160 @@ definitions:
         $ref: "#/definitions/transfer_lock"
       mask_contacts:
         $ref: "#/definitions/mask_contacts"
+    required:
+      - domain
+      - domain_utf8
+      - created_at
+      - updated_at
+      - expires_at
+      - renews_at
+      - auto_renew
+      - transfer_lock
+      - mask_contacts
+
+  Nameservers:
+    type: array
+    items:
+      $ref: "#/definitions/nameserver"
+    minItems: 2
+    maxItems: 5
+    uniqueItems: true
+    
+  PendingUpdates:
+    type: array
+    items:
+      type: object
+      properties:
+        created_at:
+          $ref: "#/definitions/created_at"
+        payload:
+          # TODO: define payload based on domain PATCH/PUT payloads above
+          type: object
+      required:
+        - created_at
+        - payload
+
+  Contact:
+    properties:
+      first_name:
+        $ref: "#/definitions/first_name"
+      last_name:
+        $ref: "#/definitions/last_name"
+      company:
+        $ref: "#/definitions/company"
+      country:
+        $ref: "#/definitions/country"
+      street:
+        $ref: "#/definitions/street"
+      city:
+        $ref: "#/definitions/city"
+      state:
+        $ref: "#/definitions/state"
+      postcode:
+        $ref: "#/definitions/postcode"
+      phone:
+        $ref: "#/definitions/phone"
+      email:
+        $ref: "#/definitions/email"
+    required:
+      - first_name
+      - last_name
+      - country
+      - street
+      - city
+      - postcode
+      - phone
+      - email
+  
+  DomainContacts:
+    properties:
+      owner:
+        $ref: "#/definitions/Contact"
+      admin:
+        $ref: "#/definitions/Contact"
+      tech:
+        $ref: "#/definitions/Contact"
+      billing:
+        $ref: "#/definitions/Contact"
+    required:
+      - owner
+      - admin
+      - tech
+      - billing
+  
+  Record:
+    properties:
+      name:
+        $ref: "#/definitions/record_name"
+      type:
+        $ref: "#/definitions/record_type"
+      value:
+        $ref: "#/definitions/record_value"
+    required:
+      - name
+      - type
+      - value
+  
+  DomainRecord:
+    allOf:
+      - $ref: "#/definitions/Record"
+      - type: object
+        properties:
+          id:
+            $ref: "#/definitions/id"
+          service:
+            $ref: "#/definitions/service"
+            
+  DomainRecords:
+    type: array
+    items:
+      $ref: "#/definitions/DomainRecord"
+
+  # TODO: expand this service
+  DomainService:
+    properties:
+      service:
+        $ref: "#/definitions/service"
+    required:
+      - service
+
+  Transfer:
+    properties:
+      type:
+        $ref: "#/definitions/transfer_type"
+      domain:
+        $ref: "#/definitions/domain"
+      domain_utf8:
+        $ref: "#/definitions/domain_utf8"
+      status:
+        $ref: "#/definitions/transfer_status"
+      transfer_code:
+        $ref: "#/definitions/transfer_code"
+      created_at:
+        $ref: "#/definitions/created_at"
+      updated_at:
+        $ref: "#/definitions/updated_at"
+      log:
+        type: array
+        items:
+          type: object
+          properties:
+            created_at:
+              $ref: "#/definitions/created_at"
+            status:
+              $ref: "#/definitions/transfer_status"
+            message:
+              type: string
+          required:
+            - created_at
+            - status
+            - message
+    required:
+      - type
+      - domain
+      - domain_utf8
+      - status
+      - transfer_code
+      - created_at
+      - updated_at
+      - log
