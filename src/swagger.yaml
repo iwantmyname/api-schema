@@ -236,9 +236,7 @@ paths:
           in: body
           required: true
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Record"
+            $ref: "#/definitions/Records"
       responses:
         200:
           description: |
@@ -295,7 +293,7 @@ paths:
           description: |
             A domain's zone file
           # TODO: define schema?
-    
+
   /domains/{domain}/services:
     parameters:
       - $ref: "#/parameters/domain"
@@ -380,54 +378,278 @@ paths:
           schema:
             $ref: "#/definitions/Transfer"
 
+  /services:
+    get:
+      description: |
+        List all available one-click services.
+      responses:
+        200:
+          description: |
+            List of services
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Service"
 
-  # /services:
-  #   get:
+  /services/{service}:
+    parameters:
+      - $ref: "#/parameters/service"
+    get:
+      description: |
+        Show details related to the service including a description and DNS records to be added.
+      responses:
+        200:
+          description: |
+            A service
+          schema:
+            $ref: "#/definitions/Service"
 
-  # /services/{service}:
-  #   parameters:
-  #     - $ref: "#/parameters/service"
-  #   get:
+  /account:
+    get:
+      description: |
+        Get all details related to your iwantmyname account.
+      responses:
+        200:
+          description: |
+            Your account
+          schema:
+            allOf:
+              - $ref: "#/definitions/Account"
+              - type: object
+                required:
+                  - username
+                  - default_contact
+                  - default_nameservers
+                  - default_billing
+    patch:
+      description: |
+        Update specific details for your account.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          # TODO: schema without required fields
+          schema:
+            $ref: "#/definitions/Account"
+      responses:
+        200:
+          description: |
+            Your account
+          schema:
+            # TODO: move this (and above one) into its own schema $ref
+            allOf:
+              - $ref: "#/definitions/Account"
+              - type: object
+                required:
+                  - username
+                  - default_contact
+                  - default_nameservers
+                  - default_billing
 
-  # /account:
-  #   get:
-  #   patch:
-  # /account/contacts/default:
-  #   get:
-  #   put:
-  #   patch:
-  # /account/nameservers/default:
-  #   get:
-  #   put:
-  # /account/billing/default:
-  #   get:
-  #   put:
-  #   delete:
-  # /account/receipts:
-  #   get:
-  # /account/receipts/{id}:
-  #   parameters:
-  #     - $ref: "#/parameters/id"
-  #   get:
-  # /products:
-  #   get:
-  # /products/{product}:
-  #   parameters:
-  #     - $ref: "#/parameters/product"
-  #   get:
-  # /tlds:
-  #   get:
-  # /tlds/{tld}:
-  #   parameters:
-  #     - $ref: "#/parameters/tld"
-  #   get:
-  # /search/results:
-  #   get:
-  # /search/results/{domain}:
-  #   parameters:
-  #     - $ref: "#/parameters/domain"
-  #   get:
-  
+  /account/contacts/default:
+    get:
+      description: |
+        Show default contact information used for new domain registrations.
+      responses:
+        200:
+          description:
+            Your default domain contact
+          schema:
+            $ref: "#/definitions/Contact"
+    put:
+      description: |
+        Replace current default contact with a new set of contact information.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Contact"
+      responses:
+        200:
+          description:
+            Your default domain contact
+          schema:
+            $ref: "#/definitions/Contact"
+    patch:
+      description: |
+        Update specific information for your default contact.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Contact"
+      responses:
+        200:
+          description:
+            Your default domain contact
+          schema:
+            $ref: "#/definitions/Contact"
+
+  /account/nameservers/default:
+    get:
+      description: |
+        List of default nameservers used for new domain registrations.
+      responses:
+        200:
+          description: |
+            Your default list of nameservers
+          schema:
+            $ref: "#/definitions/Nameservers"
+    put:
+      description: |
+        Replace default nameservers with a new list of nameservers.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/Nameservers"
+      responses:
+        200:
+          description: |
+            Your default list of nameservers
+          schema:
+            $ref: "#/definitions/Nameservers"
+
+  /account/billing/default:
+    get:
+      description: |
+        Show the current billing details associated with your account. Your account will need an active set of billing details in order to process domain registrations and renewals.
+      responses:
+        200:
+          description: |
+            Your default billing profile
+          schema:
+            $ref: "#/definitions/BillingProfile"
+    put:
+      description: |
+        Replace your account's current billing details with new billing details. This will trigger a small authorization charge to validate your new billing details. This authorization charge will be automatically refunded.
+      parameters:
+        - name: payload
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/NewBillingProfile"
+      responses:
+        200:
+          description: |
+            Your default billing profile
+          schema:
+            $ref: "#/definitions/BillingProfile"
+
+    delete:
+      description: |
+        Remove the current billing details from your account.
+      responses:
+        204:
+          description: |
+            Your default billing profile was removed.
+
+  /account/receipts:
+    get:
+      description: |
+        List all receipts related to your account.
+      responses:
+        200:
+          description: |
+            A list of receipts
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Receipt"
+
+  /account/receipts/{id}:
+    parameters:
+      - $ref: "#/parameters/id"
+    get:
+      description: |
+        Get all information associated with a specific receipt on your account.
+      responses:
+        200:
+          description: |
+            A receipt
+          schema:
+            $ref: "#/definitions/Receipt"
+
+  /products:
+    get:
+      description: |
+        List of our products and their prices by currency.
+      responses:
+        200:
+          description: |
+            A list of products
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Product"
+
+  /products/{product}:
+    parameters:
+      - $ref: "#/parameters/product"
+    get:
+      description: |
+        Show a specific product and its prices by currency.
+      responses:
+        200:
+          description: |
+            A product
+          schema:
+            $ref: "#/definitions/Product"
+
+  /tlds:
+    get:
+      # TODO: return unsupported TLDs as well
+      description: |
+        List of our supported TLDs and any TLD-specific notes or registration requirements.
+      responses:
+        200:
+          description: |
+            A list of TLDs
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TLD"
+
+  /tlds/{tld}:
+    parameters:
+      - $ref: "#/parameters/tld"
+    get:
+      description: |
+        Show TLD-specific registration information.
+      responses:
+        200:
+          description: |
+            A TLD
+          schema:
+            $ref: "#/definitions/TLD"
+
+  /search/results:
+    get:
+      description: |
+        Generate personalized results for your domain search query.
+      responses:
+        200:
+          description: |
+            A list of domain names
+          schema:
+            $ref: "#/definitions/SearchResults"
+
+  /search/results/{domain}:
+    parameters:
+      - $ref: "#/parameters/domain"
+    get:
+      description: |
+        Check domain availability, price, and any TLD-specific requirements.
+      responses:
+        200:
+          description: |
+            Domain search availability
+          schema:
+            $ref: "#/definitions/SearchResult"
+
 
 parameters:
   domain:
@@ -548,6 +770,19 @@ definitions:
       # TODO: more transfer status types?
   transfer_code:
     type: string
+  username:
+    type: string
+    format: email
+  billing_name:
+    type: string
+  exp_month:
+    type: integer
+    minimum: 1
+    maximum: 12
+  exp_year:
+    type: integer
+    minimum: 2015
+    maximum: 2035
 
   Domain:
     properties:
@@ -587,7 +822,7 @@ definitions:
     minItems: 2
     maxItems: 5
     uniqueItems: true
-    
+
   PendingUpdates:
     type: array
     items:
@@ -633,7 +868,7 @@ definitions:
       - postcode
       - phone
       - email
-  
+
   DomainContacts:
     properties:
       owner:
@@ -649,7 +884,7 @@ definitions:
       - admin
       - tech
       - billing
-  
+
   Record:
     properties:
       name:
@@ -662,7 +897,12 @@ definitions:
       - name
       - type
       - value
-  
+
+  Records:
+    type: array
+    items:
+      $ref: "#/definitions/Record"
+
   DomainRecord:
     allOf:
       - $ref: "#/definitions/Record"
@@ -672,19 +912,37 @@ definitions:
             $ref: "#/definitions/id"
           service:
             $ref: "#/definitions/service"
-            
+
   DomainRecords:
     type: array
     items:
       $ref: "#/definitions/DomainRecord"
 
-  # TODO: expand this service
-  DomainService:
+  Service:
     properties:
       service:
         $ref: "#/definitions/service"
+      name:
+        type: string
+      description:
+        type: string
+      records:
+        $ref: "#/definitions/Records"
     required:
       - service
+      - name
+      - description
+      - records
+
+  DomainService:
+    allOf:
+      - $ref: "#/definitions/Service"
+      - type: object
+        properties:
+          id:
+            $ref: "#/definitions/id"
+        required:
+          - id
 
   Transfer:
     properties:
@@ -726,3 +984,170 @@ definitions:
       - created_at
       - updated_at
       - log
+
+  Account:
+    properties:
+      username:
+        $ref: "#/definitions/username"
+      default_contact:
+        $ref: "#/definitions/Contact"
+      default_nameservers:
+        $ref: "#/definitions/Nameservers"
+      default_billing:
+        $ref: "#/definitions/BillingProfile"
+
+  BillingProfile:
+    properties:
+      last4:
+        type: string
+        pattern: "^[0-9]{4}$"
+      name:
+        $ref: "#/definitions/billing_name"
+      exp_month:
+        $ref: "#/definitions/exp_month"
+      exp_year:
+        $ref: "#/definitions/exp_year"
+    required:
+      - last4
+      - name
+      - exp_month
+      - exp_year
+
+  NewBillingProfile:
+    properties:
+      number:
+        type: string
+      name:
+        $ref: "#/definitions/billing_name"
+      exp_month:
+        $ref: "#/definitions/exp_month"
+      exp_year:
+        $ref: "#/definitions/exp_year"
+      security_code:
+        type: string
+    required:
+      - number
+      - name
+      - exp_month
+      - exp_year
+      - security_code
+
+  Receipt:
+    properties:
+      id:
+        $ref: "#/definitions/id"
+      currency:
+        type: string
+      subtotal:
+        type: number
+      total:
+        type: number
+      items:
+        type: array
+        items:
+          type: object
+          properties:
+            product:
+              type: string
+            type:
+              type: string
+            quantity:
+              type: integer
+            amount:
+              type: number
+          required:
+            - product
+            - type
+            - quantity
+            - amount
+      download_url:
+        type: string
+        format: uri
+    required:
+      - id
+      - currency
+      - subtotal
+      - total
+      - items
+      - download_url
+
+  Product:
+    properties:
+      product:
+        type: string
+      type:
+        type: string
+      price:
+        type: object
+        # TODO: define price/currency object
+    required:
+      - product
+      - type
+      - price
+
+  TLD:
+    properties:
+      tld:
+        type: string
+      tld_utf8:
+        type: string
+      description:
+        type: string
+      image_url:
+        type: string
+        format: uri
+      can_transfer_lock:
+        type: boolean
+      can_mask_contacts:
+        type: boolean
+      product_url:
+        type: string
+        format: uri
+    required:
+      - tld
+      - tld_utf8
+      - description
+      - image_url
+      - can_transfer_lock
+      - can_mask_contacts
+      - product_url
+
+  SearchResults:
+    type: array
+    items:
+      type: object
+      properties:
+        domain:
+          $ref: "#/definitions/domain"
+        domain_utf8:
+          $ref: "#/definitions/domain_utf8"
+      required:
+        - domain
+        - domain_utf8
+
+  SearchResult:
+    properties:
+      domain:
+        $ref: "#/definitions/domain"
+      domain_utf8:
+        $ref: "#/definitions/domain_utf8"
+      available:
+        type: boolean
+      price:
+        # TODO: price object
+        type: object
+      caveats:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+            reason:
+              type: string
+          required:
+            - type
+            - reason
+    required:
+      - domain
+      - domain_utf8
