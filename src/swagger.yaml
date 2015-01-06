@@ -14,12 +14,53 @@ produces:
   - application/json
 
 
+tags:
+  - name: Domains
+    description: |
+      Interact with domain names managed by your account.
+
+  - name: Domain Transfers
+    description: |
+      Manage your incoming and outgoing domain transfers.
+
+  - name: Domain Contacts
+    description: |
+      Manage contact information associated with a domain name.
+
+  - name: DNS Records
+    description: |
+      Manage your domain's DNS records. For these DNS records to be effective,
+      your domain must be using our nameservers. Keep in mind that DNS changes
+      will be applied immediately, but may not be immediately active due to DNS
+      propagation. Please allow a few hours for the changes to take effect.
+
+  - name: One-click Services
+    description: |
+      Interact with our one-click services marketplace. Services represent a set
+      of DNS records to be applied to a domain for use with third-party platforms.
+      DNS propagation, as mentioned above, applies here too.
+
+  - name: Account
+    description: |
+      Manage your account profile and settings.
+
+  - name: Billing & Receipts
+    description: |
+      Manage your account's billing information and retrieve receipts.
+
+  - name: Domain Search
+    description: |
+      gTLD and ccTLD availability and special requirements.
+
+
 paths:
 
   /domains:
     get:
       description: |
         List all registered domain names.
+      tags:
+        - Domains
       responses:
         200:
           description: |
@@ -35,6 +76,8 @@ paths:
     get:
       description: |
         Get all information associated with the domain.
+      tags:
+        - Domains
       responses:
         200:
           description: |
@@ -44,6 +87,8 @@ paths:
     patch:
       description: |
         Update specific editable details for the domain.
+      tags:
+        - Domains
       parameters:
         - name: payload
           in: body
@@ -69,6 +114,8 @@ paths:
     get:
       description: |
         List of all of the domain's nameservers.
+      tags:
+        - Domains
       responses:
         200:
           description: |
@@ -78,6 +125,8 @@ paths:
     put:
       description: |
         Replace domain's nameservers with a new list of nameservers.
+      tags:
+        - Domains
       parameters:
         - name: payload
           in: body
@@ -97,6 +146,8 @@ paths:
     get:
       description: |
         List all updates initiated on the domain that are still pending at the registry.
+      tags:
+        - Domains
       responses:
         200:
           description: |
@@ -110,6 +161,8 @@ paths:
     get:
       description: |
         List all contacts (owner, admin, tech, billing) associated with the domain.
+      tags:
+        - Domain Contacts
       responses:
         200:
           description: |
@@ -119,6 +172,8 @@ paths:
     put:
       description: |
         Replace contact information for all contact types at the same time.
+      tags:
+        - Domain Contacts
       parameters:
         - name: payload
           in: body
@@ -134,6 +189,8 @@ paths:
     patch:
       description: |
         Update specific contact information for all contact types at the same time.
+      tags:
+        - Domain Contacts
       parameters:
         - name: payload
           in: body
@@ -155,6 +212,8 @@ paths:
     get:
       description: |
         Show contact information for a specified contact type on the domain. Contact types include the domain owner/registrant (owner), administrative contact (admin), technical contact (tech), or billing contact (billing).
+      tags:
+        - Domain Contacts
       responses:
         200:
           description: |
@@ -164,6 +223,8 @@ paths:
     put:
       description: |
         Replace contact information for a specific contact type.
+      tags:
+        - Domain Contacts
       parameters:
         - name: payload
           in: body
@@ -179,6 +240,8 @@ paths:
     patch:
       description: |
         Update specific contact information for a specific contact type.
+      tags:
+        - Domain Contacts
       parameters:
         - name: payload
           in: body
@@ -199,6 +262,8 @@ paths:
     get:
       description: |
         List all DNS records for the domain.
+      tags:
+        - DNS Records
       responses:
         200:
           description: |
@@ -213,6 +278,8 @@ paths:
     post:
       description: |
         Add a DNS record to the domain.
+      tags:
+        - DNS Records
       parameters:
         - name: payload
           in: body
@@ -231,6 +298,8 @@ paths:
     put:
       description: |
         Replace all DNS records for a domain with a new set of records. This is effectively DELETE on each exisiting record and POST for each new record.
+      tags:
+        - DNS Records
       parameters:
         - name: payload
           in: body
@@ -256,6 +325,8 @@ paths:
     delete:
       description: |
         Remove a specific DNS record from a domain.
+      tags:
+        - DNS Records
       responses:
         204:
           description: |
@@ -267,6 +338,8 @@ paths:
     get:
       description: |
         Show the domain's DNS record as a BIND-compatible zone file.
+      tags:
+        - DNS Records
       produces:
         - text/plain
       responses:
@@ -277,6 +350,8 @@ paths:
     put:
       description: |
         Replace the domain's DNS records using a BIND-compatible zone file.
+      tags:
+        - DNS Records
       consumes:
         - text/plain
       produces:
@@ -300,6 +375,8 @@ paths:
     get:
       description: |
         List all one-click services installed to the domain.
+      tags:
+        - One-click Services
       responses:
         200:
           description: |
@@ -311,6 +388,8 @@ paths:
     post:
       description: |
         Install a service to the domain by adding necessary DNS records and, for some services, web forwarding.
+      tags:
+        - One-click Services
       parameters:
         - name: payload
           in: body
@@ -336,6 +415,8 @@ paths:
     delete:
       description: |
         Remove all DNS records related to a service installed to the domain.
+      tags:
+        - One-click Services
       responses:
         204:
           description: |
@@ -345,6 +426,8 @@ paths:
     get:
       description: |
         List all pending incoming and outgoing domain transfers.
+      tags:
+        - Domain Transfers
       responses:
         200:
           description: |
@@ -360,6 +443,8 @@ paths:
     put:
       description: |
         Restart the domain's pending transfer using a new authorization code.
+      tags:
+        - Domain Transfers
       parameters:
         - name: payload
           in: body
@@ -382,6 +467,8 @@ paths:
     get:
       description: |
         List all available one-click services.
+      tags:
+        - One-click Services
       responses:
         200:
           description: |
@@ -397,6 +484,8 @@ paths:
     get:
       description: |
         Show details related to the service including a description and DNS records to be added.
+      tags:
+        - One-click Services
       responses:
         200:
           description: |
@@ -408,6 +497,8 @@ paths:
     get:
       description: |
         Get all details related to your iwantmyname account.
+      tags:
+        - Account
       responses:
         200:
           description: |
@@ -424,6 +515,8 @@ paths:
     patch:
       description: |
         Update specific details for your account.
+      tags:
+        - Account
       parameters:
         - name: payload
           in: body
@@ -450,6 +543,8 @@ paths:
     get:
       description: |
         Show default contact information used for new domain registrations.
+      tags:
+        - Account
       responses:
         200:
           description:
@@ -459,6 +554,8 @@ paths:
     put:
       description: |
         Replace current default contact with a new set of contact information.
+      tags:
+        - Account
       parameters:
         - name: payload
           in: body
@@ -474,6 +571,8 @@ paths:
     patch:
       description: |
         Update specific information for your default contact.
+      tags:
+        - Account
       parameters:
         - name: payload
           in: body
@@ -491,6 +590,8 @@ paths:
     get:
       description: |
         List of default nameservers used for new domain registrations.
+      tags:
+        - Account
       responses:
         200:
           description: |
@@ -500,6 +601,8 @@ paths:
     put:
       description: |
         Replace default nameservers with a new list of nameservers.
+      tags:
+        - Account
       parameters:
         - name: payload
           in: body
@@ -517,6 +620,8 @@ paths:
     get:
       description: |
         Show the current billing details associated with your account. Your account will need an active set of billing details in order to process domain registrations and renewals.
+      tags:
+        - Billing & Receipts
       responses:
         200:
           description: |
@@ -526,6 +631,8 @@ paths:
     put:
       description: |
         Replace your account's current billing details with new billing details. This will trigger a small authorization charge to validate your new billing details. This authorization charge will be automatically refunded.
+      tags:
+        - Billing & Receipts
       parameters:
         - name: payload
           in: body
@@ -542,6 +649,8 @@ paths:
     delete:
       description: |
         Remove the current billing details from your account.
+      tags:
+        - Billing & Receipts
       responses:
         204:
           description: |
@@ -551,6 +660,8 @@ paths:
     get:
       description: |
         List all receipts related to your account.
+      tags:
+        - Billing & Receipts
       responses:
         200:
           description: |
@@ -566,6 +677,8 @@ paths:
     get:
       description: |
         Get all information associated with a specific receipt on your account.
+      tags:
+        - Billing & Receipts
       responses:
         200:
           description: |
@@ -577,6 +690,8 @@ paths:
     get:
       description: |
         List of our products and their prices by currency.
+      tags:
+        - Domain Search
       responses:
         200:
           description: |
@@ -592,6 +707,8 @@ paths:
     get:
       description: |
         Show a specific product and its prices by currency.
+      tags:
+        - Domain Search
       responses:
         200:
           description: |
@@ -604,6 +721,8 @@ paths:
       # TODO: return unsupported TLDs as well
       description: |
         List of our supported TLDs and any TLD-specific notes or registration requirements.
+      tags:
+        - Domain Search
       responses:
         200:
           description: |
@@ -619,6 +738,8 @@ paths:
     get:
       description: |
         Show TLD-specific registration information.
+      tags:
+        - Domain Search
       responses:
         200:
           description: |
@@ -630,6 +751,8 @@ paths:
     get:
       description: |
         Generate personalized results for your domain search query.
+      tags:
+        - Domain Search
       responses:
         200:
           description: |
@@ -643,6 +766,8 @@ paths:
     get:
       description: |
         Check domain availability, price, and any TLD-specific requirements.
+      tags:
+        - Domain Search
       responses:
         200:
           description: |
@@ -692,6 +817,10 @@ parameters:
 
 
 definitions:
+  id:
+    type: string
+    format: uuid
+    readonly: true
   created_at:
     type: string
     format: date-time
@@ -746,9 +875,6 @@ definitions:
   email:
     type: string
     format: email
-  id:
-    type: string
-    format: uuid
   service:
     type: string
   record_name:
