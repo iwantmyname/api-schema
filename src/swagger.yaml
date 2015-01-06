@@ -919,17 +919,25 @@ definitions:
     enum:
       - incoming
       - outgoing
+    readOnly: true
     example: incoming
+  transfer_code:
+    type: string
+    readOnly: true
+    example: xqLtLwvQch
   transfer_status:
     enum:
       - initiated
       - pending
       - completed
       # TODO: more transfer status types?
+    readOnly: true
     example: initiated
-  transfer_code:
+  transfer_log_message:
     type: string
-    example: xqLtLwvQch
+    readOnly: true
+    example: |
+      Transfer confirmation email sent to registrant@example.com
   username:
     type: string
     format: email
@@ -958,6 +966,69 @@ definitions:
     minimum: 2015
     maximum: 2035
     example: 2015
+  currency:
+    enum:
+      - USD
+      - NZD
+      - EUR
+      - AUD
+      - GBP
+    example: USD
+  amount:
+    type: integer
+    minimum: 0
+    readOnly: true
+    example: 1490
+  quantity:
+    type: integer
+    minimum: 1
+    default: 1
+    example: 1
+  product_type:
+    type: string
+    readOnly: true
+    example: domain
+  product_action:
+    enum:
+      - register
+      - renew
+      - transfer
+      - restore
+    readOnly: true
+    example: register
+  product_sku:
+    type: string
+    readOnly: true
+    example: com
+  prices:
+    type: object
+    patternProperties:
+      # TODO: use currency enum as properties definition?
+      "^(USD|NZD|EUR|AUD|GBP)$":
+        $ref: "#/definitions/amount"
+  receipt_url:
+    type: string
+    format: uri
+    readOnly: true
+    example: "https://iwantmyname.com/receipts/3E37DBAC37CBA935DBC53C5F1F37A.pdf"
+  tld:
+    type: string
+    readOnly: true
+    example: com
+  tld_utf8:
+    type: string
+    readOnly: true
+    example: com
+  tld_description:
+    type: string
+    readOnly: true
+    example: |
+      International web address for your own personal or professional website, blog or email.
+  tld_image:
+    type: string
+    readOnly: true
+    format: uri
+    example: "https://iwantmyname.com/assets/images/tlds/com.png"
 
   Domain:
     properties:
@@ -1146,7 +1217,7 @@ definitions:
             status:
               $ref: "#/definitions/transfer_status"
             message:
-              type: string
+              $ref: "#/definitions/transfer_log_message"
           required:
             - created_at
             - status
@@ -1212,32 +1283,31 @@ definitions:
       id:
         $ref: "#/definitions/id"
       currency:
-        type: string
+        $ref: "#/definitions/currency"
       subtotal:
-        type: number
+        $ref: "#/definitions/amount"
       total:
-        type: number
+        $ref: "#/definitions/amount"
       items:
         type: array
         items:
           type: object
           properties:
             product:
-              type: string
+              $ref: "#/definitions/product_type"
             type:
-              type: string
+              $ref: "#/definitions/product_action"
             quantity:
-              type: integer
+              $ref: "#/definitions/quantity"
             amount:
-              type: number
+              $ref: "#/definitions/amount"
           required:
             - product
             - type
             - quantity
             - amount
       download_url:
-        type: string
-        format: uri
+        $ref: "#/definitions/receipt_url"
     required:
       - id
       - currency
@@ -1247,14 +1317,14 @@ definitions:
       - download_url
 
   Product:
+    # TODO: define as oneOf with different product schemas? (e.g. tld with tld_url)
     properties:
       product:
-        type: string
+        $ref: "#/definitions/product_sku"
       type:
-        type: string
+        $ref: "#/definitions/product_type"
       price:
-        type: object
-        # TODO: define price/currency object
+        $ref: "#/definitions/prices"
     required:
       - product
       - type
@@ -1263,21 +1333,24 @@ definitions:
   TLD:
     properties:
       tld:
-        type: string
+        $ref: "#/definitions/tld"
       tld_utf8:
-        type: string
+        $ref: "#/definitions/tld_utf8"
       description:
-        type: string
+        $ref: "#/definitions/tld_description"
       image_url:
-        type: string
-        format: uri
+        $ref: "#/definitions/tld_image"
       can_transfer_lock:
         type: boolean
+        readOnly: true
       can_mask_contacts:
         type: boolean
+        readOnly: true
       product_url:
         type: string
         format: uri
+        readOnly: true
+        example: "https://api.iwantmyname.com/v1/product/com"
     required:
       - tld
       - tld_utf8
@@ -1308,9 +1381,9 @@ definitions:
         $ref: "#/definitions/domain_utf8"
       available:
         type: boolean
+        readOnly: true
       price:
-        # TODO: price object
-        type: object
+        $ref: "#/definitions/prices"
       caveats:
         type: array
         items:
@@ -1318,8 +1391,13 @@ definitions:
           properties:
             type:
               type: string
+              readOnly: true
+              example: premium
             reason:
               type: string
+              readOnly: true
+              example: |
+                This is a premium domain reserved by the registry.
           required:
             - type
             - reason
