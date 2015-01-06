@@ -819,96 +819,145 @@ parameters:
 definitions:
   id:
     type: string
-    format: uuid
     readonly: true
+    example: 3E37DBAC37CBA935DBC53C5F1F37A
   created_at:
     type: string
     format: date-time
     readOnly: true
+    example: 2015-10-21T16:29:00Z
   updated_at:
     type: string
     format: date-time
     readOnly: true
+    example: 2015-10-21T16:29:00Z
   expires_at:
     type: string
     format: date-time
     readOnly: true
+    example: 2015-10-21T16:29:00Z
   renews_at:
     type: string
     format: date-time
     readOnly: true
+    example: 2015-10-21T16:29:00Z
   domain:
     type: string
     format: hostname
     readOnly: true
+    example: xn--souffl-gva.com
   domain_utf8:
     type: string
     format: hostname
     readOnly: true
+    example: soufflé.com
   auto_renew:
     type: boolean
+    example: true
   transfer_lock:
     type: boolean
+    example: true
   mask_contacts:
     type: boolean
+    example: true
   nameserver:
     type: string
     format: hostname
+    example: ns1.iwantmyname.net
   first_name:
     type: string
+    example: Marty
   last_name:
     type: string
+    example: McFly
   company:
     type: string
+    example: CusCo
   country:
     type: string
+    example: US
   street:
     type: string
+    example: 9303 Lyon Drive
   city:
     type: string
+    example: Hill Valley
   state:
     type: string
+    example: CA
   postcode:
     type: string
+    example: "95420"
   phone:
     type: string
+    example: +1.7075550199
   email:
     type: string
     format: email
+    example: marty.mcfly@mailinator.com
   service:
     type: string
+    example: cargo
+  service_name:
+    type: string
+    example: Cargo Collective
+  service_description:
+    type: string
+    example: |
+      Simple web publishing tools and stunning website templates for designers and artists.
   record_name:
     type: string
+    example: www
   record_type:
     # TODO: define enum of record types
     type: string
+    example: CNAME
   record_value:
     type: string
+    example: cargocollective.com
   transfer_type:
     enum:
       - incoming
       - outgoing
+    example: incoming
   transfer_status:
     enum:
       - initiated
       - pending
       - completed
       # TODO: more transfer status types?
+    example: initiated
   transfer_code:
     type: string
+    example: xqLtLwvQch
   username:
     type: string
     format: email
-  billing_name:
+    example: marty.mcfly@mailinator.com
+  card_number:
     type: string
+    example: "4012888888881881"
+  card_last4:
+    type: string
+    pattern: "^[0-9]{4}$"
+    readOnly: true
+    example: "1881"
+  card_security:
+    type: string
+    example: "0000"
+  card_holder:
+    type: string
+    example: Marty McFly
   exp_month:
     type: integer
     minimum: 1
     maximum: 12
+    example: 10
   exp_year:
     type: integer
     minimum: 2015
     maximum: 2035
+    example: 2015
 
   Domain:
     properties:
@@ -1049,9 +1098,9 @@ definitions:
       service:
         $ref: "#/definitions/service"
       name:
-        type: string
+        $ref: "#/definitions/service_name"
       description:
-        type: string
+        $ref: "#/definitions/service_description"
       records:
         $ref: "#/definitions/Records"
     required:
@@ -1088,6 +1137,7 @@ definitions:
         $ref: "#/definitions/updated_at"
       log:
         type: array
+        readOnly: true
         items:
           type: object
           properties:
@@ -1125,10 +1175,9 @@ definitions:
   BillingProfile:
     properties:
       last4:
-        type: string
-        pattern: "^[0-9]{4}$"
+        $ref: "#/definitions/card_last4"
       name:
-        $ref: "#/definitions/billing_name"
+        $ref: "#/definitions/card_holder"
       exp_month:
         $ref: "#/definitions/exp_month"
       exp_year:
@@ -1142,15 +1191,15 @@ definitions:
   NewBillingProfile:
     properties:
       number:
-        type: string
+        $ref: "#/definitions/card_number"
       name:
-        $ref: "#/definitions/billing_name"
+        $ref: "#/definitions/card_holder"
       exp_month:
         $ref: "#/definitions/exp_month"
       exp_year:
         $ref: "#/definitions/exp_year"
       security_code:
-        type: string
+        $ref: "#/definitions/card_security"
     required:
       - number
       - name
